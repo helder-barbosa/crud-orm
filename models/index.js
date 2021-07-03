@@ -4,6 +4,19 @@ const sequelize = new Sequelize('cadastro-orm', 'root', '', {
   host: '127.0.0.1'
 })
 
-sequelize.import('./pessoas.js')
+const models = {}
+const fs = require('fs')
+const path = require('path')
+fs
+  .readdirSync(__dirname)
+  .filter(file => file !== 'index.js')
+  .forEach(file => {
+    const model = sequelize.import(path.join(__dirname, file))
+    models[model.name] = model
+  })
 
-sequelize.sync().then(() => console.log('SYNCED'))
+
+module.exports = {
+  sequelize,
+  models
+}

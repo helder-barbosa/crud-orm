@@ -13,4 +13,7 @@ app.get('/', (req, res) => res.render('index'))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
-app.listen(port, () => console.log('listening on port ' + port))
+
+model.sequelize.sync().then(() => {
+  app.listen(port, () => console.log('CRUD-ORM Listening port ' + port))
+})
